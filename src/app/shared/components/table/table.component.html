@@ -1,0 +1,58 @@
+<table>
+  <thead>
+    <tr>
+      <th colspan="2">
+        <input
+          id="selectAllCheckbox"
+          type="checkbox"
+          (click)="toggleSelection()"
+          [indeterminate]="indeterminateSelection"
+          [checked]="allChecked"
+        />
+        {{ selectionLabel }}
+      </th>
+      <th [attr.colspan]="columns.length + 1">
+        <button
+          id="download"
+          type="button"
+          (click)="downloadSelected()"
+          [disabled]="selectionCounter === 0"
+        >
+          <i class="fa fa-download" aria-hidden="true"></i>
+          Download Selected
+        </button>
+      </th>
+    </tr>
+    <tr>
+      <th></th>
+      <th *ngFor="let column of columns" [attr.colspan]="column.colspan || 1">
+        {{ column.header }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr [ngClass]="item.selected && 'selectedRow'" *ngFor="let item of data">
+      <td class="selectionColumn">
+        <input
+          type="checkbox"
+          [disabled]="!item.selectable"
+          [checked]="item.selected"
+          (click)="toggleRowSelection(item)"
+        />
+      </td>
+      <td *ngFor="let column of columns" [attr.colspan]="column.colspan || 1">
+        <ng-container
+          *ngIf="column.decorator === CellDecorator.STATUS; else elseBlock"
+        >
+          <app-status-cell
+            [item]="item"
+            [field]="column.field"
+          ></app-status-cell>
+        </ng-container>
+        <ng-template #elseBlock>
+          {{ item[column.field] }}
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>
