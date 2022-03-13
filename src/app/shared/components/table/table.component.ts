@@ -27,7 +27,7 @@ export class TableComponent implements OnInit {
   }
 
   get allChecked(): boolean {
-    return this.selectionCounter === this.selectableItems;
+    return this.selectionCounter > 0 && this.selectionCounter === this.selectableItems;
   }
 
   get indeterminateSelection(): boolean {
